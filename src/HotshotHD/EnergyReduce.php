@@ -19,7 +19,6 @@ class EnergyReduce extends PluginTask {
     public function onRun($currentTick){
 			$this->plugin->setEnergy($this->player, $this->plugin->getEnergy($this->player) - 1);
 			
-			$this->player->sendMessage($this->plugin->getEnergy($this->player));
 			if($this->plugin->getEnergy($this->player) <= 0) {
 			  $this->plugin->resetEnergy($this->player);
 		          $this->plugin->cancelTask($this->plugin->tasks[$this->plugin->getEnergyReduceTask($this->player)->getTaskId()]);
