@@ -3,7 +3,9 @@
 namespace HotshotHD;
 
 use pocketmine\Server;
+
 use pocketmine\scheduler\PluginTask;
+
 use pocketmine\Player;
 
 class EnergyReduce extends PluginTask {
@@ -12,14 +14,15 @@ class EnergyReduce extends PluginTask {
         parent::__construct($plugin);
         $this->plugin = $plugin;
         $this->player = $player;
-		$this->energy = $this->plugin->energy[$this->player->getName()];
     }
 
     public function onRun($currentTick){
-        $this->energy--;
-
-        if($this->energy == 0) {
-            $this->plugin->cancelTask($this->plugin->tasks[new EnergyReduce($this->plugin, $this->player)]);
-        }
-    }
+			$this->plugin->setEnergy($this->player, $this->plugin->getEnergy($this->player) - 1);
+			
+			$this->player->sendMessage($this->plugin->getEnergy($this->player));
+			if($this->plugin->getEnergy($this->player) <= 0) {
+			  $this->plugin->resetEnergy($this->player);
+		          $this->plugin->cancelTask($this->plugin->tasks[$this->plugin->getEnergyReduceTask($this->player)->getTaskId()]);
+			}
+}
 }
