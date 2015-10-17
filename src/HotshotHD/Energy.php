@@ -6,9 +6,6 @@ use pocketmine\Server;
 
 use pocketmine\scheduler\PluginTask;
 
-use pocketmine\utils\Config;
-use pocketmine\item\Item;
-
 use pocketmine\Player;
 class Energy extends PluginTask {
 
