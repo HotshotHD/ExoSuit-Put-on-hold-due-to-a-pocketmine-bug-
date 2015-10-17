@@ -3,10 +3,9 @@
 namespace HotshotHD;
 
 use pocketmine\Server;
-
 use pocketmine\scheduler\PluginTask;
-
 use pocketmine\Player;
+
 class Energy extends PluginTask {
 
     public function __construct(ExoSuit $plugin, Player $player){
@@ -17,7 +16,6 @@ class Energy extends PluginTask {
     }
 
     public function onRun($currentTick){
-			$this->player->sendPopup("Energy:" . $this->energy);
+        $this->player->sendPopup("Energy:" . $this->energy);
+    }
 }
-}
-?>
