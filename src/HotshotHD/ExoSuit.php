@@ -3,24 +3,19 @@
 namespace HotshotHD;
 
 use pocketmine\plugin\PluginBase;
-
-use pocketmine\event\Listener;
-
 use pocketmine\event\player\PlayerJoinEvent;
-
-use pocketmine\Player;
-
 use pocketmine\event\player\PlayerItemHeldEvent;
-
+use pocketmine\event\Listener;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
 use pocketmine\utils\Config;
+use pocketmine\Player;
+
 class ExoSuit extends PluginBase implements Listener {
-	public $energy = array();
+	public $energy = [];
 	public $tasks = [];
-	
-	public function onEnable() {	
+
+	public function onEnable() {
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		$this->getLogger()->info("has been enabled");
 		@mkdir($this->getDataFolder());
@@ -28,48 +23,41 @@ class ExoSuit extends PluginBase implements Listener {
 		"Energy-Item-ID" => 280
 		));
 	}
-	
-       public function cancelTask($id) {
-         unset($this->tasks[$id]);
-         $this->getServer()->getScheduler()->cancelTask($id);
-      }
+
+	public function cancelTask($id) {
+		unset($this->tasks[$id]);
+		$this->getServer()->getScheduler()->cancelTask($id);
+	}
 
 	public function resetEnergy($player) {
-           $this->energy[$player->getName()] = 30;
+		$this->energy[$player->getName()] = 30;
 	}
-	
-	public function reduceEnergy($player) { 
-	   $task = new EnergyReduce($this, $player);
-           $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
-	
-           $task->setHandler($h);
-	   $this->tasks[$task->getTaskId()] = $task->getTaskId();
+
+	public function reduceEnergy($player) {
+		$task = new EnergyReduce($this, $player);
+		$handler = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+		$task->setHandler($handler);
+		$this->tasks[$task->getTaskId()] = $task->getTaskId();
 	}
-	
+
 	public function showEnergy($player) {
-           $task = new Energy($this, $player);
-           $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
-	
-           $task->setHandler($h);
-	   $this->tasks[$task->getTaskId()] = $task->getTaskId();
-           $this->getServer()->getScheduler()->scheduleRepeatingTask(new Energy($this, $player), 1);
+		$task = new Energy($this, $player);
+		$handler = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+		$task->setHandler($handler);
+		$this->tasks[$task->getTaskId()] = $task->getTaskId();
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new Energy($this, $player), 1);
 	}
-	
+
 	public function onJoin(PlayerJoinEvent $event) {
-	   $player = $event->getPlayer();
-		
-           $this->resetEnergy($player);
-	   $this->showEnergy($player);
+		$player = $event->getPlayer();
+		$this->resetEnergy($player);
+		$this->showEnergy($player);
 	}
-	
+
 	public function onItemHold(PlayerItemHeldEvent $event) {
 		$player = $event->getPlayer();
-		
 		if($event->getItem()->getId() == $this->config->get("Energy-Item-ID")) {
 			$this->reduceEnergy($player);
 		}
 	}
-	
 }
-
-?>
