@@ -88,7 +88,6 @@ class ExoSuit extends PluginBase implements Listener {
 		"Energy" => 30
 		));
 		
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new EnergyReduce($this, $player), 20);
 		$this->resetEnergy($player);
 		$this->showEnergy($player);
 	}
@@ -97,7 +96,7 @@ class ExoSuit extends PluginBase implements Listener {
 		$player = $event->getPlayer();
 		 
 		if($event->getItem()->getId() == $this->config->get("Energy-Item-ID")) {
-			$this->reduceEnergy($player);
+		   $this->reduceEnergy($player);
 		}
 	}
 	
