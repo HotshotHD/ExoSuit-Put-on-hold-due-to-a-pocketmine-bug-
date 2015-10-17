@@ -29,37 +29,37 @@ class ExoSuit extends PluginBase implements Listener {
 		));
 	}
 	
-    public function cancelTask($id) {
-      unset($this->tasks[$id]);
-      $this->getServer()->getScheduler()->cancelTask($id);
-   }
+       public function cancelTask($id) {
+         unset($this->tasks[$id]);
+         $this->getServer()->getScheduler()->cancelTask($id);
+      }
 
 	public function resetEnergy($player) {
-		$this->energy[$player->getName()] = 30;
+           $this->energy[$player->getName()] = 30;
 	}
 	
-	public function reduceEnergy($player) {
-		$task = new EnergyReduce($this, $player);
-        $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+	public function reduceEnergy($player) { 
+	   $task = new EnergyReduce($this, $player);
+           $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
 	
-        $task->setHandler($h);
-	    $this->tasks[$task->getTaskId()] = $task->getTaskId();
+           $task->setHandler($h);
+	   $this->tasks[$task->getTaskId()] = $task->getTaskId();
 	}
 	
 	public function showEnergy($player) {
-		$task = new Energy($this, $player);
-        $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+           $task = new Energy($this, $player);
+           $h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
 	
-        $task->setHandler($h);
-	    $this->tasks[$task->getTaskId()] = $task->getTaskId();
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new Energy($this, $player), 1);
+           $task->setHandler($h);
+	   $this->tasks[$task->getTaskId()] = $task->getTaskId();
+           $this->getServer()->getScheduler()->scheduleRepeatingTask(new Energy($this, $player), 1);
 	}
 	
 	public function onJoin(PlayerJoinEvent $event) {
-		$player = $event->getPlayer();
+	   $player = $event->getPlayer();
 		
-		$this->resetEnergy($player);
-		$this->showEnergy($player);
+           $this->resetEnergy($player);
+	   $this->showEnergy($player);
 	}
 	
 	public function onItemHold(PlayerItemHeldEvent $event) {
