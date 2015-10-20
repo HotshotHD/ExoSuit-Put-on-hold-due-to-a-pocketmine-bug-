@@ -37,12 +37,7 @@ class ExoSuit extends PluginBase implements Listener {
    }
 
 	public function resetEnergy($player) {
-		$this->energy = new Config($this->getDataFolder() . "Players/" . strtolower($player->getName()), Config::YAML, array(
-		"Energy" => 30
-		));
-		
-		$this->energy->set("energy", 30);
-		$this->energy->save();
+		$this->setEnergy($player, 30);
 	}
 	
 	public function setEnergy($player, $amount) {
